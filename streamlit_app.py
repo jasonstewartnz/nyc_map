@@ -3,12 +3,15 @@ import pandas as pd
 import numpy as np
 from snowflake import connector 
 
-st.title( 'NYC Street Map' )
 
-focus_coordinates = (-74.00296211242676,40.72143702499928)
+
+default_focus_coordinates = (-74.00296211242676,40.72143702499928)
 default_distance = 2000
 
-def get_coordinates():
+
+    
+    
+def get_coordinates(distance, focus_coordinates):
     query_sql = f"""
         SELECT 
             NAME,
@@ -32,28 +35,44 @@ def get_coordinates():
     """    
     
     # connect to snowflake
-    my_cnx = connector.connect(**st.secrets["snowflake"])
-    #     my_cur = my_cnx.cursor()
-
-    # run a snowflake query and put it all in a var called my_catalog
-    #     my_cur.execute(query_sql)
-    #     nyc_locations = my_cur.fetchall()
+    sf_conn = connector.connect(**st.secrets["snowflake"])
 
     # put the dafta into a dataframe
-    nyc_locations = pd.read_sql(query_sql, my_cnx)
-
-    #     df = pd.DataFrame(
-    #         np.random.randn(1000, 2) / [50, 50] + [40.72143702499928,-74.00296211242676],
-    #         columns=['lat', 'lon'])
+    nyc_locations = pd.read_sql(query_sql, sf_conn)
     
-    st.header( f'Locations within {distance:0f}m of location X' )
-    st.map(nyc_locations)
+    return nyc_locations
+
+def init_app_elements():
+    st.title( 'NYC Street Map' )
     
-    st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']])
+    distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=get_coordinates, key="distance_input" )
+    
+    st.header( f'Locations within {distance:.0f}m of location X', key='header' )
+    
+    nyc_locations = get_coordinates(distance, default_focus_coordinates)
+                                    
+    st.map(nyc_locations, key='map')
+    
+    st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']], key='location_list')
+    
+def update_app():
+    distance = st.session_state['distance_input'].value
+    focus_coordinates = default_coordinates # for now
+    
+    nyc_locations = get_coordinates(distance, focus_coordinates)
+    
+    st.session_state['map'].data = nyc_locations
+    
+    st.session_state['header'].body = f'Locations within {distance:.0f}m of location X'
+    
+
+if 'map' not in st.session_state:
+    # init
+    st.session_state['map'] = 'value'
+else:
+    # update
+    update_app()
 
 
-distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=get_coordinates )
-
-if st.button( 'Load nearby amenities' ):
-    get_coordinates()
+   
     
