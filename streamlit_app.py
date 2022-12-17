@@ -52,5 +52,5 @@ def get_coordinates():
 
 
 
-if streamlit.button( 'Load nearby amenities' ):
+if st.button( 'Load nearby amenities' ):
     get_coordinates()
