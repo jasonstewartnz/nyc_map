@@ -42,7 +42,7 @@ def get_coordinates(distance, focus_coordinates):
     
     return nyc_locations
 
-def init_app_elements():
+def init_app():
     st.title( 'NYC Street Map' )
     
     distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=get_coordinates, key="distance_input" )
@@ -68,7 +68,7 @@ def update_app():
 
 if 'map' not in st.session_state:
     # init
-    st.session_state['map'] = 'value'
+    init_app()
 else:
     # update
     update_app()
