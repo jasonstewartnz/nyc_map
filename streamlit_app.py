@@ -17,7 +17,7 @@ def get_coordinates():
                 ELSE ST_CENTROID(COORDINATES)
                 END as primary_coordinate,
 
-            ST_X(primary_coordinate) as lng,
+            ST_X(primary_coordinate) as lon,
             ST_Y(primary_coordinate) as lat,
             NAME,
             AMENITY
@@ -41,10 +41,11 @@ def get_coordinates():
     # put the dafta into a dataframe
     sf_return_df = pd.DataFrame(nyc_locations)
 
-    df = pd.DataFrame(
-        np.random.randn(1000, 2) / [50, 50] + [40.72143702499928,-74.00296211242676],
-        columns=['lat', 'lon'])
-    st.map(df)
+    #     df = pd.DataFrame(
+    #         np.random.randn(1000, 2) / [50, 50] + [40.72143702499928,-74.00296211242676],
+    #         columns=['lat', 'lon'])
+    
+    st.map(sf_return_df)
     
     st.dataframe(sf_return_df)
 
