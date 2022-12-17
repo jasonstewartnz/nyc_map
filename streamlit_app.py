@@ -6,7 +6,7 @@ from snowflake import connector
 st.title( 'NYC Street Map' )
 
 focus_coordinates = (-74.00296211242676,40.72143702499928)
-distance = 2000
+default_distance = 2000
 
 def get_coordinates():
     query_sql = f"""
@@ -46,11 +46,14 @@ def get_coordinates():
     #         np.random.randn(1000, 2) / [50, 50] + [40.72143702499928,-74.00296211242676],
     #         columns=['lat', 'lon'])
     
+    st.header( f'Locations within {distance:0f}m of location X' )
     st.map(nyc_locations)
     
     st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']])
 
 
+distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=get_coordinates, args=None, kwargs=None, *, disabled=False, label_visibility="visible")
 
 if st.button( 'Load nearby amenities' ):
     get_coordinates()
+    
