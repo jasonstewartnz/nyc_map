@@ -52,7 +52,7 @@ def get_coordinates():
     st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']])
 
 
-distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=get_coordinates, args=None, kwargs=None, *, disabled=False, label_visibility="visible")
+distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=get_coordinates )
 
 if st.button( 'Load nearby amenities' ):
     get_coordinates()
