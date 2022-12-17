@@ -47,7 +47,7 @@ def init_app():
     
     distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=get_coordinates, key="distance_input" )
     
-    st.header( f'Locations within {distance:.0f}m of location X', key='header' )
+    st.session_state['header'] = st.header( f'Locations within {distance:.0f}m of location X' )
     
     nyc_locations = get_coordinates(distance, default_focus_coordinates)
                                     
