@@ -58,7 +58,7 @@ def gen_app_elements(distance, focus_coordinates):
     
     nyc_locations = get_coordinates(distance, default_focus_coordinates)
                                     
-    st.session_state['map'] = st.map( nyc_locations, zoom=11 )
+    st.session_state['map'] = st.map( nyc_locations, zoom=10 )
     
     st.session_state['location_list'] = st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']] )
     
