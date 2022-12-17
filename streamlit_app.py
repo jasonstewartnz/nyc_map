@@ -42,19 +42,7 @@ def get_coordinates(distance, focus_coordinates):
     
     return nyc_locations
 
-def init_app():
-    st.title( 'NYC Street Map' )
-    
-    distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=get_coordinates, key="distance_input" )
-    
-    st.session_state['header'] = st.header( f'Locations within {distance:.0f}m of location X' )
-    
-    nyc_locations = get_coordinates(distance, default_focus_coordinates)
-                                    
-    st.session_state['map'] = st.map( nyc_locations )
-    
-    st.session_state['location_list'] = st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']] )
-    
+
 def update_app():
     print('getting locations')
     distance = st.session_state['distance_input'].value
@@ -68,7 +56,19 @@ def update_app():
     st.session_state['map'].data = nyc_locations
     
     st.session_state['location_list'].data = nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']]
+
+def init_app():
+    st.title( 'NYC Street Map' )
     
+    distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=update_app, key="distance_input" )
+    
+    st.session_state['header'] = st.header( f'Locations within {distance:.0f}m of location X' )
+    
+    nyc_locations = get_coordinates(distance, default_focus_coordinates)
+                                    
+    st.session_state['map'] = st.map( nyc_locations )
+    
+    st.session_state['location_list'] = st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']] )
     
 
 if 'map' not in st.session_state:
