@@ -24,7 +24,7 @@ def get_coordinates():
     nyc_locations = my_cur.fetchall()
 
     # put the dafta into a dataframe
-    sf_return_df = pandas.DataFrame(nyc_locations)
+    sf_return_df = pd.DataFrame(nyc_locations)
 
     df = pd.DataFrame(
         np.random.randn(1000, 2) / [50, 50] + [40.72143702499928,-74.00296211242676],
