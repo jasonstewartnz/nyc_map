@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from snowflake import connector 
 
 st.title( 'NYC Street Map' )
 
@@ -15,7 +16,7 @@ def get_coordinates():
     """    
     
     # connect to snowflake
-    my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+    my_cnx = connector.connect(**streamlit.secrets["snowflake"])
     my_cur = my_cnx.cursor()
 
     # run a snowflake query and put it all in a var called my_catalog
