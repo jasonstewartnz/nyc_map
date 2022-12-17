@@ -16,7 +16,7 @@ def get_coordinates():
     """    
     
     # connect to snowflake
-    my_cnx = connector.connect(**streamlit.secrets["snowflake"])
+    my_cnx = connector.connect(**st.secrets["snowflake"])
     my_cur = my_cnx.cursor()
 
     # run a snowflake query and put it all in a var called my_catalog
