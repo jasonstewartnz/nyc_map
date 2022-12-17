@@ -10,9 +10,24 @@ distance = 2000
 
 def get_coordinates():
     query_sql = f"""
-    SELECT *
-    FROM OPENSTREETMAP_NEW_YORK.NEW_YORK.V_OSM_NY_AMENITY_SUSTENANCE
-    WHERE ST_DWITHIN(ST_POINT({focus_coordinates[0]},{focus_coordinates[1]}),COORDINATES,{distance});
+        SELECT 
+            COORDINATES,    
+            CASE WHEN ST_NUMPOINTS(COORDINATES) = 1
+                THEN COORDINATES 
+                ELSE ST_CENTROID(COORDINATES)
+                END as primary_coordinate,
+
+            ST_X(primary_coordinate) as lng,
+            ST_Y(primary_coordinate) as lat,
+            NAME,
+            AMENITY
+        FROM OPENSTREETMAP_NEW_YORK.NEW_YORK.V_OSM_NY_AMENITY_SUSTENANCE
+        WHERE ST_DWITHIN(ST_POINT({focus_coordinates[0]},{focus_coordinates[1]}),
+               CASE WHEN ST_NUMPOINTS(COORDINATES) = 1
+                THEN COORDINATES 
+                ELSE ST_CENTROID(COORDINATES)
+                END
+               ,{distance});    
     """    
     
     # connect to snowflake
