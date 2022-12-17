@@ -19,7 +19,7 @@ def get_coordinates():
                 THEN COORDINATES 
                 ELSE ST_CENTROID(COORDINATES)
                 END as primary_coordinate,
-            ST_X(primary_coordinate) as lng,
+            ST_X(primary_coordinate) as lon,
             ST_Y(primary_coordinate) as lat,
             st_distance(ST_POINT({focus_coordinates[0]},{focus_coordinates[1]}), primary_coordinate) as distance_away_m
         FROM OPENSTREETMAP_NEW_YORK.NEW_YORK.V_OSM_NY_AMENITY_SUSTENANCE
@@ -50,4 +50,7 @@ def get_coordinates():
     
     st.dataframe(nyc_locations['NAME','AMENITY','location','distance_away_m'])
 
-get_coordinates()
+
+
+if streamlit.button( 'Load nearby amenities' ):
+    get_coordinates()
