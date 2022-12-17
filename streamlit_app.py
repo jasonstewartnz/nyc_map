@@ -43,28 +43,18 @@ def get_coordinates(distance, focus_coordinates):
     return nyc_locations
 
 
+
 def update_app():
-    print('getting locations')
+    
     distance = st.session_state['distance_input']
     
-    st.text(str(distance))
-    st.text(str(type(distance)))
+    gen_app_elements(distance, default_focus_coordinates)
     
-    focus_coordinates = default_focus_coordinates # for now
-    
-    nyc_locations = get_coordinates(distance, focus_coordinates)
 
-    print('updating elements')
-    st.session_state['header'].body = f'Locations within {distance:.0f}m of location X'
-    
-    st.session_state['map'].data = nyc_locations
-    
-    st.session_state['location_list'].data = nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']]
-
-def init_app():
+def gen_app_elements(distance, focus_coordinates):
     st.title( 'NYC Street Map' )
     
-    distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=update_app, key='distance_input' )
+    distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=distance, step=100, format='%u', on_change=update_app, key='distance_input' )
     
     #     st.session_state["distance_input"] = distance
     
@@ -76,6 +66,10 @@ def init_app():
     
     st.session_state['location_list'] = st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']] )
     
+
+def init_app():
+    gen_app_elements(default_distance, default_focus_coordinates)
+
 
 if 'map' not in st.session_state:
     # init
