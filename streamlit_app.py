@@ -30,3 +30,5 @@ def get_coordinates():
         columns=['lat', 'lon'])
 
     st.map(df)
+
+get_coordinates()
