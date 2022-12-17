@@ -11,7 +11,7 @@ def get_coordinates():
     sql = f"""
     SELECT *
     FROM OPENSTREETMAP_NEW_YORK.NEW_YORK.V_OSM_NY_AMENITY_SUSTENANCE
-    WHERE ST_DWITHIN(ST_POINT({focus_coordinates[0]},{focus_coordinates{1}}),COORDINATES,{distance});
+    WHERE ST_DWITHIN(ST_POINT({focus_coordinates[0]},{focus_coordinates[1]}),COORDINATES,{distance});
     """    
     
     #     # connect to snowflake
