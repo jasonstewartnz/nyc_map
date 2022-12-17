@@ -60,7 +60,7 @@ def update_app():
 def init_app():
     st.title( 'NYC Street Map' )
     
-    distance = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=update_app, key="distance_input" )
+    st.session_state["distance_input"] = st.number_input('Distance (m)', min_value=100, max_value=5000, value=default_distance, step=100, format='%u', on_change=update_app )
     
     st.session_state['header'] = st.header( f'Locations within {distance:.0f}m of location X' )
     
