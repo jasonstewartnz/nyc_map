@@ -45,7 +45,11 @@ def get_coordinates(distance, focus_coordinates):
 
 def update_app():
     print('getting locations')
-    distance = st.session_state['distance_input'].value
+    distance = st.session_state['distance_input']
+    
+    st.text(str(distance))
+    st.text(str(type(distance)))
+    
     focus_coordinates = default_focus_coordinates # for now
     
     nyc_locations = get_coordinates(distance, focus_coordinates)
