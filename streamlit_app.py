@@ -9,8 +9,6 @@ default_focus_coordinates = (-74.00296211242676,40.72143702499928)
 default_distance = 2000
 
 
-    
-    
 def get_coordinates(distance, focus_coordinates):
     query_sql = f"""
         SELECT 
@@ -41,8 +39,6 @@ def get_coordinates(distance, focus_coordinates):
     nyc_locations = pd.read_sql(query_sql, sf_conn)
     
     return nyc_locations
-
-
 
 def update_app():
     
@@ -76,7 +72,8 @@ if 'map' not in st.session_state:
     init_app()
 else:
     # update
-    update_app()
+    #     update_app()
+    pass
 
 
    
