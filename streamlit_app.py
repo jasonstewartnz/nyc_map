@@ -32,21 +32,21 @@ def get_coordinates():
     
     # connect to snowflake
     my_cnx = connector.connect(**st.secrets["snowflake"])
-    my_cur = my_cnx.cursor()
+    #     my_cur = my_cnx.cursor()
 
     # run a snowflake query and put it all in a var called my_catalog
-    my_cur.execute(query_sql)
-    nyc_locations = my_cur.fetchall()
+    #     my_cur.execute(query_sql)
+    #     nyc_locations = my_cur.fetchall()
 
     # put the dafta into a dataframe
-    sf_return_df = pd.DataFrame(nyc_locations)
+    nyc_locations = pd.read_sql(query_sql, my_cnx)
 
     #     df = pd.DataFrame(
     #         np.random.randn(1000, 2) / [50, 50] + [40.72143702499928,-74.00296211242676],
     #         columns=['lat', 'lon'])
     
-    st.map(sf_return_df)
+    st.map(nyc_locations)
     
-    st.dataframe(sf_return_df)
+    st.dataframe(nyc_locations)
 
 get_coordinates()
