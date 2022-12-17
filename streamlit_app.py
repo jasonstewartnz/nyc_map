@@ -51,9 +51,9 @@ def init_app():
     
     nyc_locations = get_coordinates(distance, default_focus_coordinates)
                                     
-    st.map(nyc_locations, key='map')
+    st.session_state['map'] st.map( nyc_locations )
     
-    st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']], key='location_list')
+    st.session_state['location_list'] = st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']] )
     
 def update_app():
     distance = st.session_state['distance_input'].value
@@ -61,9 +61,12 @@ def update_app():
     
     nyc_locations = get_coordinates(distance, focus_coordinates)
     
+    st.session_state['header'].body = f'Locations within {distance:.0f}m of location X'
+    
     st.session_state['map'].data = nyc_locations
     
-    st.session_state['header'].body = f'Locations within {distance:.0f}m of location X'
+    st.session_state['location_list'].data = nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']]
+    
     
 
 if 'map' not in st.session_state:
