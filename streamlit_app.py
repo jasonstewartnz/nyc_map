@@ -48,7 +48,7 @@ def get_coordinates():
     
     st.map(nyc_locations)
     
-    st.dataframe(nyc_locations['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M'])
+    st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']])
 
 
 
