@@ -56,11 +56,13 @@ def init_app():
     st.session_state['location_list'] = st.dataframe(nyc_locations.loc[:,['NAME','AMENITY','LOCATION','DISTANCE_AWAY_M']] )
     
 def update_app():
+    print('getting locations')
     distance = st.session_state['distance_input'].value
     focus_coordinates = default_coordinates # for now
     
     nyc_locations = get_coordinates(distance, focus_coordinates)
-    
+
+    print('updating elements')
     st.session_state['header'].body = f'Locations within {distance:.0f}m of location X'
     
     st.session_state['map'].data = nyc_locations
